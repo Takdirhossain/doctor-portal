@@ -1,7 +1,12 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { mainContext } from '../context/AuthContext';
 
 const Header = () => {
+    const { user, logOut } = useContext(mainContext)
+    const handaleLogout = () =>{
+        logOut()
+    }
     return (
         <div className="navbar bg-base-100">
             <div className="navbar-start">
@@ -19,9 +24,18 @@ const Header = () => {
             </div>
             <div className="navbar-center hidden lg:flex">
                 <ul className="menu menu-horizontal p-0">
-                <li><Link to='/'>Home</Link></li>
-                        <li><Link to='/getappoinment'>Appoinment</Link></li>
-                        <li><Link to='/'>About</Link></li>
+                    <li><Link to='/'>Home</Link></li>
+                    <li><Link to='/getappoinment'>Appoinment</Link></li>
+                    <li><Link to='/'>About</Link></li>
+                    {
+                        user?.uid? 
+                        <>
+                        <li><button onClick={handaleLogout} >Logout</button></li>
+                        <li><Link to='/dashboard'>Dashboard</Link></li>
+                        </>
+                        :
+                        <li><Link to='/login'>Login</Link></li>
+                    }
                 </ul>
             </div>
             <div className="navbar-end">

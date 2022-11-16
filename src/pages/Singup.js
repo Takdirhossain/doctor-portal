@@ -1,16 +1,32 @@
-import React from 'react';
+import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { mainContext } from '../context/AuthContext';
 
 const Singup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
+    const { createUser, updateUser } = useContext(mainContext)
+    const [signUpError, setSignUpError] = useState('')
 
     const handleLogin = data => {
         console.log(data)
         console.log(errors)
+        createUser(data.email, data.password)
+            .then(result => {
+                const user = result.user
+                const userInfo = {
+                    displayName: data.name
+                }
+                updateUser(userInfo)
+                    .then(() => { })
+                    .catch(err => console.log(err));
+            })
+            .catch(error => {
+                setSignUpError(error.message)
+            })
     }
     return (
-       
+
         <div className='h-[800px] flex justify-center items-center'>
             <div className='w-96 p-7'>
                 <h2 className='text-xl text-center'>Sign Up</h2>
@@ -39,7 +55,9 @@ const Singup = () => {
                         {errors.password && <p className='text-red-500'>{errors.password.message}</p>}
                     </div>
                     <input className='btn btn-accent w-full mt-4' value="Sign Up" type="submit" />
-                    {/* {signUpError && <p className='text-red-600'>{signUpError}</p>} */}
+                    <div>
+                    {signUpError && <p className='text-red-600'>{signUpError}this </p>}
+                    </div>
                 </form>
                 <p>Already have an account <Link className='text-secondary' to="/login">Please Login</Link></p>
                 <div className="divider">OR</div>
