@@ -1,19 +1,20 @@
 import React, { useContext, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { mainContext } from '../context/AuthContext';
 
 const Singup = () => {
     const { register, formState: { errors }, handleSubmit } = useForm();
     const { createUser, updateUser } = useContext(mainContext)
     const [signUpError, setSignUpError] = useState('')
-
+    const navigate = useNavigate()
     const handleLogin = data => {
         console.log(data)
         console.log(errors)
         createUser(data.email, data.password)
             .then(result => {
                 const user = result.user
+                console.log(user)
                 const userInfo = {
                     displayName: data.name
                 }
@@ -56,7 +57,7 @@ const Singup = () => {
                     </div>
                     <input className='btn btn-accent w-full mt-4' value="Sign Up" type="submit" />
                     <div>
-                    {signUpError && <p className='text-red-600'>{signUpError}this </p>}
+                        {signUpError && <p className='text-red-600'>{signUpError}this </p>}
                     </div>
                 </form>
                 <p>Already have an account <Link className='text-secondary' to="/login">Please Login</Link></p>
