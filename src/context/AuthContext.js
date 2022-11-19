@@ -17,9 +17,9 @@ const AuthContext = ({ children }) => {
         return signInWithEmailAndPassword(auth, email, password)
     }
     const updateUser = userProfile => {
-       return updateProfile(user, userProfile)
+        return updateProfile(auth.currentUser, userProfile)
     }
-    const logOut = () =>{
+    const logOut = () => {
         setLoading(true)
         return signOut(auth)
     }
